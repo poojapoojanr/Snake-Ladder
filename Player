@@ -1,0 +1,51 @@
+package player;
+import java.util.Scanner;
+
+public class Player {
+    private String name;
+    private String mailID;
+    private  String contactNo;
+    private String address;
+    private int age;
+    public void SetPlayerDetails(String Name,String mailID, String  contactNo, String address,int age)
+    {
+    this.name = name;
+    this.mailID = mailID;
+    this.contactNo=contactNo;
+    this.address=address;
+    this.age=age;
+    }
+    public void  setPlayerName(String name)
+    {
+        this.name = name;
+    }
+
+    public  void getPlayerDetails() {
+        System.out.println("Player Name: " + this.name);
+        System.out.println("Player EmailId: " + this.mailID);
+        System.out.println("Player Age: " + this.age);
+        System.out.println("Player Contact Number: " + this.contactNo);
+        System.out.println("Player Address: " + this.address);
+    }
+    public String getPlayerName(){
+        return this.name;
+    }
+      public  void setPlayerFromUserInput(Player p){
+        Scanner scn =new Scanner(System.in);
+          System.out.println("Enter Player details");
+          System.out.println("Enter Player Name");
+          String name=scn.nextLine();
+          System.out.println("Enter Player EmailID");
+          String mailId=scn.nextLine();
+          System.out.println("Enter Player age");
+          int age =scn.nextInt();
+          System.out.println("Enter Player contact number");
+          String contactNo=scn.next();
+          System.out.println("Enter Player address");
+          String address=scn.nextLine();
+
+         // Player p=new Player();
+          p.SetPlayerDetails(name,mailID,contactNo,address,age);
+          //return p;
+      }
+}
