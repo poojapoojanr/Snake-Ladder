@@ -1,0 +1,80 @@
+package game;
+import coordinate.Coordinate;
+import player.Player;
+import board.Board;
+import dice.Dice;
+import jumper.Jumper;
+
+public class Game {
+    Board board;
+    Player[] players;
+    boolean[] isAllowed;
+    int turn;
+    Coordinate[] places;
+    Dice dice;
+    public Game(Board board, Player[] players,Dice dice){
+        this.board=board;
+        this.players=players;
+        this.dice=dice;
+        turn=0;
+        isAllowed=new boolean[players.length];
+        places=new Coordinate[players.length];
+        for(int i=0;i<players.length;i++)
+            places[i]=new Coordinate(board.getBoardSize()-1,0);
+    }
+    public void play() {
+        while (true) {
+            int n = dice.diceRoll();
+            System.out.println(players[turn].getPlayerName() + "rolled->" + n + " [" + places[turn].getRow() + "," + places[turn].getCol() + "]");
+            if (!isAllowed[turn]) {
+                if (n != 1) {
+                    turn = 1 - turn;
+                    continue;
+                } else
+                    isAllowed[turn] = true;
+            }
+            Coordinate newCoordinate = getNewCoordinates(places[turn], n);
+            if (newCoordinate.getRow() < 0) {
+                System.out.println(players[turn].getPlayerName() + " has won");
+                return;
+            }
+
+            places[turn] = newCoordinate;
+            turn  = 1-turn;
+
+        }
+    }
+
+    private Coordinate getNewCoordinates(Coordinate oldCoordinate,int n){
+    int row = oldCoordinate.getRow();
+    int col = oldCoordinate.getCol();
+
+    while (n>0) {
+        if (row%2 != 0) {
+            if (col == board.getBoardSize()-1)
+                row--;
+            else col++;
+        }
+        else {
+            if (col == 0) row--;
+            else col--;
+        }
+        n--;
+    }
+    if (row < 0)
+        return new Coordinate(row, col);
+    if (checkIfJumperExists(row,col))
+    {
+        Jumper jumper = board.Jumpers.get(board.matrix[row][col]);
+
+        return jumper.end;
+
+    }
+    return new Coordinate(row, col);
+}
+private boolean checkIfJumperExists(int row, int col)
+{
+    return board.Jumpers.containsKey(board.matrix[row][col]);
+}
+
+}
